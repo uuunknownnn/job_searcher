@@ -6,37 +6,37 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
-from bidi.algorithm import get_display
-import arabic_reshaper
-
+import os
 
 path = r"C:\Users\t90na\Downloads\chromedriver_win32\chromedriver.exe"
-driver_service = Service(executable_path=path)
-driver = webdriver.Chrome(service=driver_service)
-driver.get('https://www.jobs.ps/')    #exploring a job website
-implicitly_wait(30)
-search_bar = driver.find_element(By.XPATH, value="//*[@id='main-wrapper']/header/div/form/div/input")
-time.sleep(5)
-search_bar.send_keys("Electrical Engineer")  # searching for a specific vacancy
-mySearch = search_bar.send_keys(Keys.ENTER)
+driver = webdriver.Chrome(path)
+os.environ['PATH'] += path
+driver.get('https://www.jobs.ps/')    # exploring a job website
+driver.implicitly_wait(20)
+driver.maximize_window()
 
-time.sleep(5)  
-#get the entire element of the result comapny name, vacancy, date, location
-search = driver.find_element(By.XPATH, '//*[@id="main-wrapper"]/div/div/div[2]/div[3]/div/div[2]/a[1]')
-time.sleep(2)
-#get the company names of results
-search_results = driver.find_elements(By.CLASS_NAME, "list--cell--company ")
+search_bar = driver.find_element_by_css_selector('input[class="header--search-input"]')
+search_bar.send_keys("Electrical Engineer", Keys.ENTER)  # searching for a specific vacancy
+
+time.sleep(5)  #wait till page completely loaded
+# get the company names of results
+search_results = driver.find_elements_by_css_selector(
+    'div[class="list--cell--company "]'
+)
+
 Companies_list = []
-#listing company names
-#adjusting arabic names to show properly
+# listing company names
+
 for result in search_results:
-    Companies_list.append(get_display(arabic_reshaper.reshape(result.text)))
+    Companies_list.append(result.text)
 print(Companies_list, ": Company list")
-#create json file of company names
+
+# create json file of company names
 myString = json.dumps(Companies_list)
-jsonFile = open("companies.json","w")
+jsonFile = open("companies.json", "w")
 jsonFile.write(myString)
 jsonFile.close()
-time.sleep(17)
-#quiting the driver
+print('Json file has been generated')
+time.sleep(3)
+# quiting the driver
 driver.quit()
