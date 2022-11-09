@@ -21,7 +21,7 @@ search_bar.send_keys("Electrical Engineer", Keys.ENTER)  # searching for a speci
 time.sleep(5)  #wait till page completely loaded
 # get the company names of results
 search_results = driver.find_elements_by_css_selector(
-    'div[class="list--cell--company "]'
+    'a[class="list-3--title list-3--row"] div div[class="list--cell--company "]'
 )
 
 Companies_list = []
