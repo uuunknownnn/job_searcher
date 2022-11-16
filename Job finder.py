@@ -31,9 +31,7 @@ Job_title = driver.find_elements_by_css_selector(
 comp_names = driver.find_elements_by_css_selector(
     'a[class="list-3--title list-3--row"] div[class="list-3--cell-1 list-3--cell-title-2"] div[class="list--cell--company "]'
 )
-"""
-'a[class="list-3--title list-3--row"] div[class="list-3--cell-1"] span[class="tooltip tooltipstered"]'
-"""
+
 
 city = driver.find_elements_by_xpath('//*[@id="main-wrapper"]/div/div/div/div/div/div/a/div/span')
 
